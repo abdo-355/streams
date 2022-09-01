@@ -1,19 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import { connect } from "react-redux";
+import { signIn, signOut } from "../actions";
 
-const GoogleAuth = () => {
-  const [user, setUser] = useState({});
-  const [showSignIn, setShowSignIn] = useState(true);
-
+const GoogleAuth = ({ signIn, signOut, isSignedIn }) => {
   const handleResponse = (res) => {
-    console.log(jwt_decode(res.credential));
-    setUser(jwt_decode(res.credential));
-    setShowSignIn(false);
+    signIn(jwt_decode(res.credential));
   };
 
   useEffect(() => {
     /* global google */
-    if (showSignIn) {
+
+    if (!isSignedIn) {
       google.accounts.id.initialize({
         client_id: process.env.REACT_APP_CLIENT_ID,
         callback: handleResponse,
@@ -29,17 +27,17 @@ const GoogleAuth = () => {
         logo_alignment: "left",
       });
     }
-  }, [showSignIn]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSignedIn]);
 
   const onSignOut = () => {
-    setUser({});
-    setShowSignIn(true);
+    signOut();
   };
 
   return (
     <div className="item">
-      {showSignIn && <div id="signInDiv"></div>}
-      {!showSignIn && (
+      {!isSignedIn && <div id="signInDiv"></div>}
+      {isSignedIn && (
         <button className="tiny ui black button" onClick={onSignOut}>
           <i className="google icon" />
           Sign Out
@@ -49,4 +47,8 @@ const GoogleAuth = () => {
   );
 };
 
-export default GoogleAuth;
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn };
+};
+
+export default connect(mapStateToProps, { signIn, signOut })(GoogleAuth);
