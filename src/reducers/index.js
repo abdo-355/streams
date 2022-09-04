@@ -12,7 +12,7 @@ const SignInReducer = (state = initialState, action) => {
     case "SIGN_IN":
       return { ...state, user: action.payload, isSignedIn: true };
     case "SIGN_OUT":
-      return { ...state, user: null, isSignedIn: false };
+      return { ...state, user: {}, isSignedIn: false };
     default:
       return state;
   }
