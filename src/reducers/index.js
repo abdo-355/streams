@@ -19,7 +19,7 @@ const SignInReducer = (state = initialState, action) => {
 };
 
 const streamsReducer = (state = {}, action) => {
-  switch (action.payload) {
+  switch (action.type) {
     case "FETCH_STREAMS":
       return { ...state, ..._.mapKeys(action.payload, "id") };
     case "FETCH_STREAM":
