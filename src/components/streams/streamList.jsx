@@ -13,7 +13,9 @@ const StreamList = ({ fetchStreams, streams, currentUserId, isSignedIn }) => {
     if (currentUserId !== undefined && stream.userId === currentUserId) {
       return (
         <div className="right floated content">
-          <button className="ui black button">Edit</button>
+          <Link to={`/streams/edit/${stream.id}`} className="ui black button">
+            Edit
+          </Link>
           <button className="ui button negative">Delete</button>
         </div>
       );
