@@ -1,9 +1,12 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { createStream } from "../../actions";
 
 class StreamCreate extends React.Component {
+  state = { formSubmitted: false };
+
   renderError({ touched, error }) {
     if (touched && error) {
       return (
@@ -27,6 +30,7 @@ class StreamCreate extends React.Component {
 
   onSubmit = (formValues) => {
     this.props.createStream(formValues);
+    this.setState({ formSubmitted: true });
   };
 
   render() {
@@ -42,6 +46,7 @@ class StreamCreate extends React.Component {
           label="Enter Description"
         />
         <button className="ui black button">Submit</button>
+        {this.state.formSubmitted && <Navigate to="/" />}
       </form>
     );
   }
