@@ -28,16 +28,18 @@ const StreamList = ({ fetchStreams, streams, currentUserId, isSignedIn }) => {
   };
 
   const renderList = () => {
-    return streams.map((stream) => (
-      <div className="item" key={stream.id}>
-        {streamControls(stream)}
-        <i className="large middle aligned icon camera" />
-        <div className="content">
-          {stream.title}
-          <div className="description">{stream.description}</div>
+    return streams
+      .filter((stream) => stream.userId === currentUserId)
+      .map((stream) => (
+        <div className="item" key={stream.id}>
+          {streamControls(stream)}
+          <i className="large middle aligned icon camera" />
+          <Link to={`streams/${stream.id}`} className="content">
+            {stream.title}
+            <div className="description">{stream.description}</div>
+          </Link>
         </div>
-      </div>
-    ));
+      ));
   };
 
   const renderCreateButton = () => {
